@@ -2,8 +2,8 @@
   <section class="nomads-showcase-section">
     <div class="showcase-header">
       <div class="header-left">
-        <h2 class="showcase-title">教师教学与教研实战模板库 (Nomads Showcase)</h2>
-        <p class="showcase-subtitle">精选公开课教案、评课反思、班主任总结与课题申报高频场景，点击“一键套用”快速生成</p>
+        <h2 class="showcase-title">实战案例与模板库 (Nomads Showcase)</h2>
+        <p class="showcase-subtitle">精选高频实战场景，点击“一键套用”快速生成高质量结果</p>
       </div>
       <span class="showcase-badge">已收录 {{ showcaseItems.length }} 个实战模板</span>
     </div>
@@ -41,8 +41,13 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
+const props = defineProps<{
+  appTitle?: string;
+  isImage?: boolean;
+}>();
+
 const emit = defineEmits<{
-  (e: 'apply-template', payload: { prompt: string; teacherType?: string; schoolStage?: string; subjectCategory?: string }): void;
+  (e: 'apply-template', payload: { prompt: string; style?: string }): void;
 }>();
 
 export interface ShowcaseItem {
@@ -50,81 +55,105 @@ export interface ShowcaseItem {
   tag: string;
   title: string;
   prompt: string;
-  teacherType?: string;
-  schoolStage?: string;
-  subjectCategory?: string;
+  style?: string;
   usageCount: string;
 }
 
-const showcaseItems = computed<ShowcaseItem[]>(() => [
-  {
-    id: 'teach-1',
-    tag: '公开课教案',
-    title: '语文公开课获奖教学设计',
-    prompt: '请为高中语文《荷塘月色》设计一堂展示课教案，包含核心素养定位、情境化导入、细节探究研讨及课后延伸作业。',
-    teacherType: '公开课优质教案与教学设计',
-    schoolStage: '高中教育',
-    subjectCategory: '语文人文类',
-    usageCount: '28.5k'
-  },
-  {
-    id: 'teach-2',
-    tag: '教学反思',
-    title: '课堂互动失效深刻反思',
-    prompt: '初中数学《一次函数应用题》课堂提问冷场、学生参与度低，请帮我分析教学设计漏洞并给出深层课后反思与改进策略。',
-    teacherType: '课后教学反思与评课记录',
-    schoolStage: '初中教育',
-    subjectCategory: '数学理科类',
-    usageCount: '21.3k'
-  },
-  {
-    id: 'teach-3',
-    tag: '德育总结',
-    title: '班主任期末工作与德育总结',
-    prompt: '请撰写一份小学五年级班主任期末工作总结，涵盖班风学风建设、后进生转化案例、家校共育成果及下学期改进计划。',
-    teacherType: '班主任工作总结与德育反思',
-    schoolStage: '小学教育',
-    subjectCategory: '语文人文类',
-    usageCount: '34.8k'
-  },
-  {
-    id: 'teach-4',
-    tag: '课题申报',
-    title: '教育教学微课题申报方案',
-    prompt: '请设计一个关于“双减背景下初中英语单元作业分层设计实效性研究”的微课题申报书，包含课题立项依据、研究内容及预期成果。',
-    teacherType: '教学论文与课题开题结题',
-    schoolStage: '初中教育',
-    subjectCategory: '英语外语类',
-    usageCount: '19.2k'
-  },
-  {
-    id: 'teach-5',
-    tag: '评课记录',
-    title: '专家级公开课评课与观摩记录',
-    prompt: '请针对一堂高中物理《牛顿第二定律》优质示范课，撰写一份包含教学亮点、细节瑕疵与重建建议的高质量评课意见。',
-    teacherType: '课后教学反思与评课记录',
-    schoolStage: '高中教育',
-    subjectCategory: '数学理科类',
-    usageCount: '16.7k'
-  },
-  {
-    id: 'teach-6',
-    tag: '教研论文',
-    title: '教学创新论文开题与写作提纲',
-    prompt: '请围绕“项目式学习（PBL）在高中化学实验教学中的应用”撰写一份教研论文写作大纲与核心创新点论述。',
-    teacherType: '教学论文与课题开题结题',
-    schoolStage: '高中教育',
-    subjectCategory: '数学理科类',
-    usageCount: '25.4k'
+// 模拟实战案例数据库（支持根据文本/图像类及应用主题切换）
+const showcaseItems = computed<ShowcaseItem[]>(() => {
+  if (props.isImage) {
+    return [
+      {
+        id: 'img-1',
+        tag: '写真肖像',
+        title: '商务精英形象照',
+        prompt: '高端写字楼背景，身穿深蓝色西装，眼神自信专注，赛博朋克光影效果',
+        style: '<photography>',
+        usageCount: '18.5k'
+      },
+      {
+        id: 'img-2',
+        tag: '概念插画',
+        title: '未来科幻城市海报',
+        prompt: '霓虹灯光的赛博朋克立体城市，飞行汽车，高品质概念插画，8k分辨率',
+        style: '<illustration>',
+        usageCount: '24.1k'
+      },
+      {
+        id: 'img-3',
+        tag: '二次元动漫',
+        title: '日系国潮动漫角色',
+        prompt: '穿着现代汉服的国风少年，手持纸伞，水彩漫感，唯美光感与柔光滤镜',
+        style: '<anime>',
+        usageCount: '15.9k'
+      },
+      {
+        id: 'img-4',
+        tag: '水彩艺术',
+        title: '治愈系自然风景画',
+        prompt: '晨雾中的森林湖泊，阳光穿透树林，水彩渐变质感，温馨治愈风格',
+        style: '<watercolor>',
+        usageCount: '12.3k'
+      }
+    ];
+  } else {
+    return [
+      {
+        id: 'text-1',
+        tag: '职场总结',
+        title: '周报 OKR 成果提炼',
+        prompt: '本周完成了核心模块优化与线上异常排查，请帮我梳理为具备量化指标的 OKR 汇报文案',
+        style: '专业干练，结果导向',
+        usageCount: '32.8k'
+      },
+      {
+        id: 'text-2',
+        tag: '高情商沟通',
+        title: '拒绝不合理加班话术',
+        prompt: '领导在周末突然布置非紧急任务，如何高情商、委婉且有理有据地推迟到工作日处理？',
+        style: '高情商，委婉，有情调',
+        usageCount: '28.4k'
+      },
+      {
+        id: 'text-3',
+        tag: '短视频文案',
+        title: '知识干货吸睛开头',
+        prompt: '准备制作一条关于高效学习法的短视频，设计 3 个能在前 3 秒留住用户的爆款口播开头',
+        style: '专业干练，结果导向',
+        usageCount: '45.1k'
+      },
+      {
+        id: 'text-4',
+        tag: '商务公文',
+        title: '跨部门协同申请函',
+        prompt: '因项目上线需要研发部门配合联调，撰写一份正式、严谨且明确时间节点的协同申请书',
+        style: '专业干练，结果导向',
+        usageCount: '19.7k'
+      },
+      {
+        id: 'text-5',
+        tag: '小红书种草',
+        title: '实战干货笔记排版',
+        prompt: '分享 5 个提升日常工作效率的文字工具，语言亲切，搭配吸引人的标题与 Emoji 排版',
+        style: '高情商，委婉，有情调',
+        usageCount: '36.2k'
+      },
+      {
+        id: 'text-6',
+        tag: '学术润色',
+        title: '论文摘要与结论重构',
+        prompt: '将以下粗糙的研究结论重写为学术规范、逻辑严密且无语法语病的论文摘要总结',
+        style: '专业干练，结果导向',
+        usageCount: '22.0k'
+      }
+    ];
   }
-]);
+});
 
 function applyTemplate(item: ShowcaseItem) {
   emit('apply-template', {
     prompt: item.prompt,
-    teacherType: item.teacherType,
-    schoolStage: item.schoolStage,
-    subjectCategory: item.subjectCategory
+    style: item.style
   });
 }
 </script>
